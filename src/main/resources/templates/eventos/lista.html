@@ -27,11 +27,11 @@
 		
 		<tbody>
 			<tr th:each="e : ${eventos}">
-				<td th:text="${e.id}"></td>
-				<td th:text="${e.nome}"></td>
-				<td th:text="${e.local}"></td>
-				<td th:text="${e.data}"></td>
-				<td th:text="${e.horario}"></td>
+				<td th:text="${e.id}"><a></a></td>
+				<td><a th:href="@{/eventos/{id}(id=${e.id})}"><span th:text="${e.nome}">J</span></a></td>
+				<td th:text="${e.local}"><a></a></td>
+				<td th:text="${e.data}"><a></a></td>
+				<td th:text="${e.horario}"><a></a></td>
 			</tr>
 		</tbody>
 		</table>
