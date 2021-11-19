@@ -32,7 +32,9 @@ public class EventosController {
 		System.out.println(evento);
 		er.save(evento);
 		return "eventos/evento-adicionado";
+
 	}
+
 
 	@GetMapping
 	public ModelAndView listar() {
@@ -41,6 +43,7 @@ public class EventosController {
 		ModelAndView mv = new ModelAndView("eventos/lista");
 		mv.addObject("eventos", eventos);
 		return mv;
+
 	}
 
 	@GetMapping("/{id}")
