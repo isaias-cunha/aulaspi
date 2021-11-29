@@ -24,7 +24,7 @@ public class EventosController {
 	private EventoRepository er;
 	@Autowired
 	private ConvidadoRepository cr;
-	
+
 	@GetMapping("/form")
 	public String form() {
 		return "eventos/formEvento";
@@ -38,6 +38,7 @@ public class EventosController {
 		return "eventos/evento-adicionado";
 
 	}
+
 	@GetMapping
 	public ModelAndView listar() {
 
@@ -47,6 +48,7 @@ public class EventosController {
 		return mv;
 
 	}
+
 	@GetMapping("/{id}")
 	public ModelAndView detalhar(@PathVariable Long id) {
 		ModelAndView md = new ModelAndView();
@@ -62,41 +64,53 @@ public class EventosController {
 
 		List<Convidado> convidados = cr.findByEvento(evento);
 		md.addObject("convidados", convidados);
-		
+
 		return md;
 	}
-	
+
 	@PostMapping("/{idEvento}")
-	public String salvarConvidado(@PathVariable Long idEvento, Convidado convidado){
-		
+	public String salvarConvidado(@PathVariable Long idEvento, Convidado convidado) {
+
 		System.out.println("Id do convidado: " + idEvento);
 		System.out.println(convidado);
-		
+
 		Optional<Evento> opt = er.findById(idEvento);
-		if(opt.isEmpty()) {
+		if (opt.isEmpty()) {
 			return "redirect:/eventos";
 		}
-		
+
 		Evento evento = opt.get();
 		convidado.setEvento(evento);
-		
+
 		cr.save(convidado);
-		
+
 		return "redirect:/eventos/{idEvento}";
-	} 
+	}
+
 	@GetMapping("/{id}/remover")
 	public String apagarEvento(@PathVariable Long id) {
-		
+
 		Optional<Evento> opt = er.findById(id);
-		
-		if(!opt.isEmpty()){
+
+		if (!opt.isEmpty()) {
 			Evento evento = opt.get();
-			
+
 			List<Convidado> convidados = cr.findByEvento(evento);
-			
+
 			cr.deleteAll(convidados);
 			er.delete(evento);
 		}
+		return "redirect:/eventos";
+	}
+	@GetMapping("/{id}/desconvidar")
+	public String apagarConvidado(@PathVariable Long id) {
+
+		Optional<Convidado> opt = cr.findById(id);
+		if (!opt.isEmpty()) {
+			Convidado convidado = opt.get();
+			cr.delete(convidado);
+		}
+			
 		return "redirect:/eventos";
 	}
 }
